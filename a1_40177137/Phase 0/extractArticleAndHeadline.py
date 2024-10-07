@@ -1,25 +1,11 @@
-import nltk
 import os
-from collections import defaultdict
 from bs4 import BeautifulSoup
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 
-# Ensure necessary NLTK resources are available
-nltk.download('punkt')
-nltk.download('stopwords')
-
-# Initialize PorterStemmer and stopword list
-stemmer = PorterStemmer()
-stop_words = set(stopwords.words('english'))
-
-# PrimaryIndex and PositionalIndex
-primary_index = defaultdict(list)  # For PrimaryIndex: {token: [docID1, docID2, ...]}
-positional_index = defaultdict(list)  # For PositionalIndex: {token: [(docID1, [pos1, pos2, ...]), ...]}
-
 def process_document(newid, title, body):
-    # Process a single document token by token and update the PrimaryIndex and PositionalIndex
+    # Process a single document token by token 
     current_doc_id = newid
     token_offset = 0  # Track the position of the token in the document
 
@@ -91,12 +77,3 @@ reuters_dir = 'C:/Users/lcmar/OneDrive/Bureau/Concordia_University/fall_2024/com
 
 # Process the Reuters-21578 dataset
 process_reuters_dataset(reuters_dir)
-
-# Display the first few entries of the PrimaryIndex and PositionalIndex
-print("Primary Index (first 10 tokens):")
-for token, postings in list(primary_index.items())[:10]:
-    print(f"Token: {token}, Postings: {postings}")
-
-print("\nPositional Index (first 10 tokens):")
-for token, postings in list(positional_index.items())[:10]:
-    print(f"Token: {token}, Postings: {postings}")
