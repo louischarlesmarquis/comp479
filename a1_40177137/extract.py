@@ -33,3 +33,49 @@ def extract_articles_from_sgm(file_path):
             articles.append((title_text, body_text))
 
     return articles
+
+# Function to tokenize the extracted article and headline text
+def tokenize_articles(articles):
+    token_stream = []
+
+    for title, body in articles:
+        # Tokenize title and body using NLTK's word_tokenize
+        title_tokens = word_tokenize(title)
+        body_tokens = word_tokenize(body)
+
+        # Combine tokens from title and body
+        all_tokens = title_tokens + body_tokens
+
+        # Append to token stream
+        token_stream.extend(all_tokens)
+
+    return token_stream
+
+# Example: Process all files in the Reuters-21578 dataset
+def process_reuters_dataset(directory):
+    all_tokens = []
+
+    # Iterate through all the SGML files in the dataset
+    for file_name in os.listdir(directory):
+        if file_name.endswith('.sgm'):
+            file_path = os.path.join(directory, file_name)
+
+            # Extract articles from the file
+            articles = extract_articles_from_sgm(file_path)
+
+            # Tokenize the extracted articles
+            tokens = tokenize_articles(articles)
+
+            # Append the tokens to the complete token stream
+            all_tokens.extend(tokens)
+
+    return all_tokens
+
+# Path to the Reuters-21578 dataset directory
+reuters_dir = 'C:/Users/lcmar/OneDrive/Bureau/Concordia_University/fall_2024/comp479/reuters21578/'
+
+# Process the dataset and extract the token stream
+token_stream = process_reuters_dataset(reuters_dir)
+
+# Display the first few tokens
+print(token_stream[:100])
