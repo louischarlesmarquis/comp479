@@ -21,3 +21,21 @@ count_021 = count_documents_in_sgm(full_path)
 
 print(f"Number of documents in reut2-020.sgm: {count_020}") #1000
 print(f"Number of documents in reut2-021.sgm: {count_021}") #578
+
+
+#QUESTION 2
+def extract_articles(file_path):
+    with open(file_path, 'r', encoding='ISO-8859-1') as file:
+        soup = BeautifulSoup(file, 'html.parser')
+    articles = {}
+    for reuter in soup.find_all('reuters'):
+        newid = reuter['newid']
+        text = reuter.find('text').get_text()
+        articles[newid] = text
+    return articles
+
+articles = extract_articles(full_path)
+for newid, article_text in articles.items():
+    print(f"NEWID: {newid}\nArticle Text: {article_text[:200]}...\n")
+
+
