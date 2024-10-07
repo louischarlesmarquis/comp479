@@ -19,6 +19,7 @@ count_021 = count_documents_in_sgm(full_path)
 print(f"Number of documents in reut2-020.sgm: {count_020}") #1000
 print(f"Number of documents in reut2-021.sgm: {count_021}") #578
 
+
 #QUESTION 2
 def extract_articles(file_path):
     with open(file_path, 'r', encoding='ISO-8859-1') as file:
@@ -33,14 +34,17 @@ articles = extract_articles(full_path)
 for newid, article_text in articles.items():
     print(f"NEWID: {newid}\nArticle Text: {article_text[:200]}...\n")
 
+
 #ADVANCED -> QUESTION 1
 # Load organization names
 file_name = "all-orgs-strings.lc.txt"
 full_path = f"{path_to_reuter_files}{file_name}"
 with open(full_path, 'r') as file:
     orgs = [line.strip() for line in file]
+    #It's a concise way to create a list by iterating over each line in the file.
+    #line.strip() removes any leading and trailing whitespace (including newline characters) from each line of text
 # Count occurrences of each org in the articles
-org_counts = {org: 0 for org in orgs}
+org_counts = {org: 0 for org in orgs} 
 for article in articles.values():
     for org in orgs:
         if org in article:
@@ -48,3 +52,29 @@ for article in articles.values():
 # Print results
 for org, count in org_counts.items():
     print(f"{org}: {count}")
+
+
+#ADVANCED -> QUESTION 3-4
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+# Download necessary resources
+nltk.download('punkt')
+nltk.download('stopwords')
+
+# Clean article text
+def clean_text(article):
+    tokens = word_tokenize(article)
+    tokens = [word for word in tokens if word.isalpha()]
+    tokens = [word for word in tokens if word not in stopwords.words('english')]
+    return tokens
+
+# Clean all articles
+cleaned_articles = {newid: clean_text(text) for newid, text in articles.items()}
+
+from nltk.tokenize import word_tokenize
+
+tokenized_articles = {newid: word_tokenize(text) for newid, text in articles.items()}
+for newid, tokens in tokenized_articles.items():
+    print(f"NEWID: {newid}\nTokens: {tokens[:20]}...\n")
