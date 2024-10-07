@@ -1,17 +1,15 @@
 #QUESTION 1
 from bs4 import BeautifulSoup
 
-# Open and read the .sgm file
-with open('C:/Users/lcmar/OneDrive/Bureau/Concordia_University/fall_2024/comp479/reuters21578/reut2-020.sgm', 'r', encoding='ISO-8859-1') as f:
-    data = f.read()
+# Load and parse the .sgm file
+def count_documents_in_sgm(file_path):
+    with open(file_path, 'r', encoding='ISO-8859-1') as file:
+        soup = BeautifulSoup(file, 'html.parser')
+    return len(soup.find_all('reuters'))
 
-# Parse the file using BeautifulSoup
-soup = BeautifulSoup(data, 'html.parser')
+# Count the documents in reut2-020.sgm and reut2-021.sgm
+count_020 = count_documents_in_sgm('C:/Users/lcmar/OneDrive/Bureau/Concordia_University/fall_2024/comp479/reuters21578/reut2-020.sgm')
+count_021 = count_documents_in_sgm('C:/Users/lcmar/OneDrive/Bureau/Concordia_University/fall_2024/comp479/reuters21578/reut2-021.sgm')
 
-# Find all <REUTERS> tags (each article is inside a <REUTERS> tag)
-articles = soup.find_all('reuters')
-
-# Count the number of articles
-print(f"Number of articles in reut2-020.sgm: {len(articles)}") #1000 articles
-
-
+print(f"Number of documents in reut2-020.sgm: {count_020}")
+print(f"Number of documents in reut2-021.sgm: {count_021}")
