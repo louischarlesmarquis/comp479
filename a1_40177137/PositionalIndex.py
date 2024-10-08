@@ -1,48 +1,39 @@
 import os
+from collections import defaultdict
 from bs4 import BeautifulSoup
 from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
 
-def process_document(newid, title, body):
-    # Process a single document token by token 
+# PositionalIndex
+positionalIndex = defaultdict(list)  # For PositionalIndex: {token: [(docID1, [pos1, pos2, ...]), ...]}
+
+def create_positional_index(newid, title, body):
+    # Process a single document token by token and update the PositionalIndex
     current_doc_id = newid
     token_offset = 0  # Track the position of the token in the document
 
     # Tokenize the title and body (token stream simulation)
     tokens = word_tokenize(title) + word_tokenize(body)
 
-    # Apply case-folding, remove non-alphabetic tokens and stopwords, and apply stemming
     for token in tokens:
-        current_token = token.lower()
-        if not current_token.isalpha() or current_token in stop_words:
-            continue
-        current_token = stemmer.stem(current_token)
-
-        # Update the PrimaryIndex
-        if current_token not in primary_index:
-            primary_index[current_token].append(current_doc_id)
-        elif primary_index[current_token][-1] != current_doc_id:
-            primary_index[current_token].append(current_doc_id)
+        current_token = token
 
         # Update the PositionalIndex
-        if current_token not in positional_index:
-            positional_index[current_token].append((current_doc_id, [token_offset]))
+        if current_token not in positionalIndex:
+            positionalIndex[current_token].append((current_doc_id, [token_offset]))
         else:
             # Check if the current_doc_id is already in the positional index for this token
             found_doc = False
-            for doc_info in positional_index[current_token]:
+            for doc_info in positionalIndex[current_token]:
                 if doc_info[0] == current_doc_id:
                     doc_info[1].append(token_offset)
                     found_doc = True
                     break
             if not found_doc:
-                positional_index[current_token].append((current_doc_id, [token_offset]))
+                positionalIndex[current_token].append((current_doc_id, [token_offset]))
 
         # Increment the token offset for positional indexing
         token_offset += 1
 
-#Function to extract articles from Reuters-21578 SGML files
 def extract_and_index_from_sgm(file_path):
     with open(file_path, 'r', encoding='latin-1') as f:
         data = f.read()
@@ -62,10 +53,10 @@ def extract_and_index_from_sgm(file_path):
             newid = doc['newid']
 
             # Stream and process each document token by token
-            process_document(newid, title_text, body_text)
+            create_positional_index(newid, title_text, body_text)
 
-# Iterate through all SGML files in the Reuters-21578 dataset directory
 def process_reuters_dataset(directory):
+    # Iterate through all SGML files in the Reuters-21578 dataset directory
     for file_name in os.listdir(directory):
         if file_name.endswith('.sgm'):
             file_path = os.path.join(directory, file_name)
@@ -77,3 +68,26 @@ reuters_dir = 'C:/Users/lcmar/OneDrive/Bureau/Concordia_University/fall_2024/com
 
 # Process the Reuters-21578 dataset
 process_reuters_dataset(reuters_dir)
+
+# Custom print function to format like Figure 2.11
+def print_positional_index(positional_index):
+    print("\nPositional Index: ")
+    # Loop through each token in the positional index
+    for token, postings in positional_index.items():
+        # Calculate the total frequency of the token across all documents
+        total_frequency = sum(len(positions) for _, positions in postings)
+        
+        # Print the token and its total frequency across all documents
+        print(f"{token}, {total_frequency}")
+        
+        # For each document that contains the token, print the docID, frequency, and positions
+        for docID, positions in postings:
+            doc_frequency = len(positions)  # Frequency of token in the specific document
+            positions_str = ", ".join(map(str, positions))  # Format positions as a string
+            print(f"    {docID}, {doc_frequency}: <{positions_str}>;")
+
+#print_positional_index(positionalIndex)
+
+# print("\nPositional Index (first token):")
+# for token, postings in list(positionalIndex.items())[:1]:
+#     print(f"Token: {token}, Postings: {postings}")
