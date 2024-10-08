@@ -1,4 +1,9 @@
-from PrimaryIndex import *
+import pickle
+from PrimaryIndex import primary_index_file
+
+# Load primaryIndex from the file
+with open(primary_index_file, 'rb') as f:
+    primaryIndex = pickle.load(f)
 
 def boolean_retrieval(primary_index, query, query_type):
     documents = []

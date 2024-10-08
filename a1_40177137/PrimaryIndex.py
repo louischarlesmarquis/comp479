@@ -1,4 +1,5 @@
 import os
+import pickle # module that stores primaryIndex as a serialized file
 from collections import defaultdict
 from bs4 import BeautifulSoup
 from nltk.tokenize import word_tokenize
@@ -56,6 +57,17 @@ reuters_dir = 'C:/Users/lcmar/OneDrive/Bureau/Concordia_University/fall_2024/com
 
 # Process the Reuters-21578 dataset
 process_reuters_dataset(reuters_dir)
+
+
+# Get the current working directory
+current_directory = os.getcwd()+"/a1_40177137"
+
+# Construct the full paths for the pickle file
+primary_index_file = os.path.join(current_directory, 'primaryIndex.pkl')
+
+# Save primaryIndex to a file, so that it doesn't need to be rebuilt everytime I want to access it later on
+with open(primary_index_file, 'wb') as f:
+    pickle.dump(primaryIndex, f)
 
 # Display the first entry of the PrimaryIndex
 # print("Primary Index (first 2 tokens):")

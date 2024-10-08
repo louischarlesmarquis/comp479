@@ -1,4 +1,5 @@
 import os
+import pickle # module that stores positionalIndex as a serialized file
 from collections import defaultdict
 from bs4 import BeautifulSoup
 from nltk.tokenize import word_tokenize
@@ -85,6 +86,18 @@ def print_positional_index(positional_index):
             doc_frequency = len(positions)  # Frequency of token in the specific document
             positions_str = ", ".join(map(str, positions))  # Format positions as a string
             print(f"    {docID}, {doc_frequency}: <{positions_str}>;")
+
+
+# Get the current working directory
+current_directory = os.getcwd()+"/a1_40177137"
+
+# Construct the full paths for the pickle file
+positional_index_file = os.path.join(current_directory, 'positionalIndex.pkl')
+
+# Save primaryIndex to a file, so that it doesn't need to be rebuilt everytime I want to access it later on
+with open(positional_index_file, 'wb') as f:
+    pickle.dump(positionalIndex, f)
+
 
 #print_positional_index(positionalIndex)
 

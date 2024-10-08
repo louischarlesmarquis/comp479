@@ -1,4 +1,9 @@
-from PositionalIndex import *
+import pickle
+from PositionalIndex import positional_index_file
+
+# Load primaryIndex from the file
+with open(positional_index_file, 'rb') as f:
+    positionalIndex = pickle.load(f)
 
 index = positionalIndex
 
