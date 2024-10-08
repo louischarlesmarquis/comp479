@@ -1,7 +1,9 @@
 from PositionalIndex import *
 
+index = positionalIndex
+
 # NEAR Operator: Returns documents where term1 and term2 are at most 'k' tokens apart
-def near_operator(term1, term2, k, index):
+def near_operator(term1, term2, k):
     term1 = term1.upper()
     term2 = term2.upper()
     
@@ -58,7 +60,7 @@ def near_operator(term1, term2, k, index):
     return result_docs
 
 #brute force implementation of the near operator, still works, but less efficient
-def near_operator_brute_force(term1, term2, k, index):
+def near_operator_brute_force(term1, term2, k):
     term1 = term1.upper()
     term2 = term2.upper()
     
@@ -87,9 +89,9 @@ def near_operator_brute_force(term1, term2, k, index):
 
 # Example NEAR Query
 print("near_operator function results:")
-print("NEAR('BAKER', 'SAYS', 5): ", near_operator('BAKER', 'SAYS', 5, positionalIndex))
-print("NEAR('BAKER', 'HI', 2): ", near_operator('BAKER', 'HI', 2, positionalIndex))
+print("NEAR('BAKER', 'SAYS', 5): ", near_operator('BAKER', 'SAYS', 5, ))
+print("NEAR('BAKER', 'HI', 2): ", near_operator('BAKER', 'HI', 2))
 
 # print("\n near_operator_brute_force function results: ")
-# print("NEAR('BAKER', 'SAYS', 5): ", near_operator_brute_force('BAKER', 'SAYS', 5, positionalIndex))
-# print("NEAR('BAKER', 'HI', 2): ", near_operator_brute_force('BAKER', 'HI', 2, positionalIndex))
+# print("NEAR('BAKER', 'SAYS', 5): ", near_operator_brute_force('BAKER', 'SAYS', 5))
+# print("NEAR('BAKER', 'HI', 2): ", near_operator_brute_force('BAKER', 'HI', 2))
