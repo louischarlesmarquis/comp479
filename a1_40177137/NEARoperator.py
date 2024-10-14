@@ -109,7 +109,7 @@ def near_operator_brute_force(term1, term2, k):
 
 # Example NEAR Query: Use the near_operator function to find terms within k tokens of each other
 print("near_operator function results:")
-print("NEAR('REAGAN', 'WAR', 15): ", near_operator('REAGAN', 'WAR', 15))
+print("NEAR('REAGAN', 'WAR', 5): ", near_operator('REAGAN', 'WAR', 5))
 #print("NEAR('BAKER', 'HI', 2): ", near_operator('BAKER', 'HI', 2))
 
 # Example brute force NEAR Query (uncomment to test)
