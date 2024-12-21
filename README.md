@@ -12,6 +12,9 @@ Implemented retrieval features: Boolean queries, NEAR operators and a concordanc
 
 **Text Extraction and Clustering of Concordia’s Spectrum Portal**
 
-Developed a web crawler to extract and tokenize text from Concordia's Spectrum portal using Beautiful Soup while adhering to robots.txt standards
+Developed a web crawler to extract and tokenize Master’s and PhD theses from Concordia's Spectrum portal using Beautiful Soup while adhering to robots.txt standards and using an inverted index to efficiently store data.
 
-Implemented document clustering with scikit-learn, using an inverted index to efficiently store data, performing clustering based on department and faculty, and extracting top vocabulary terms ranked by TF-IDF for cluster evaluation.
+Clustered documents with scikit-learn based on the theses’ department and faculty
+
+Evaluated clusters based on top TF-IDF vocabulary terms.
+
